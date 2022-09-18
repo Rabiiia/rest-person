@@ -36,10 +36,11 @@ public class PersonFacade {
     }
 
 
-    public PersonDTO create(PersonDTO personDTO) {
-        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getPhoneNumber());
+    public PersonDTO create(PersonDTO personDTO ) {
+       Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getPhoneNumber());
 
         EntityManager em = getEntityManager();
+
         try {
             em.getTransaction().begin();
 
@@ -101,6 +102,7 @@ public class PersonFacade {
         em.getTransaction().commit();
         return new PersonDTO(fromDB);
     }
+
 
 
 }
