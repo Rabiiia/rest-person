@@ -87,7 +87,9 @@ public class PersonFacade {
         return new PersonDTO(personEntity);
     }
 
-
+    //siden ingen address DTO, så man kan lave delete med person og address her?
+    //men jeg skal vel create en address først? kan man lave en create address herinde i delet method? (:
+    // (PersonDTO personDTO) i stedet for (int id)
     public PersonDTO delete(int id) throws EntityNotFoundException, InternalErrorException {
         EntityManager em = getEntityManager();
         Person fromDB = em.find(Person.class, id);

@@ -12,8 +12,7 @@ import utils.EMF_Creator;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonTest {
 
@@ -80,6 +79,9 @@ public class PersonTest {
         System.out.println("Testing getbyid(id)");
         int expected = p1.getId();
         int actual = facade.getById(expected).getId();
+//        assertThrows(EntityNotFoundException.class,() -> {
+//            facade.getById(expected);
+//                });
         assertEquals(expected, actual);
         System.out.println(actual);
     }
