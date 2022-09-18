@@ -28,6 +28,8 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+@Disabled
+
 public class PersonResourceTest {
 
     private static final int SERVER_PORT = 7777;
