@@ -153,16 +153,22 @@ public class PersonResourceTest {
 
     @Test
     public void testGetById() throws EntityNotFoundException {
-        given()
-                .contentType(ContentType.JSON)
+        int id = p1.getId();
+        try {
+            given()
+                    .contentType(ContentType.JSON)
 //                .pathParam("id", p1.getId()).when()
-                .get("/person/{id}",p1.getId())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK_200.getStatusCode())
-                .body("id", equalTo(p1.getId()))
-                .body("firstName", equalTo(p1.getFirstName()));
-                //.body("children", hasItems(hasEntry("name","Joseph"),hasEntry("name","Alberta")));
+                    .get("/person/{id}", id)
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.OK_200.getStatusCode())
+                    .body("id", equalTo(p1.getId()))
+                    .body("firstName", equalTo(p1.getFirstName()));
+            //.body("children", hasItems(hasEntry("name","Joseph"),hasEntry("name","Alberta")));
+        }
+        catch (Exception e) {
+            throw new EntityNotFoundException("No person with provided id " + id + " was found");
+        }
     }
 
     @Test

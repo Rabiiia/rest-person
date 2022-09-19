@@ -60,6 +60,8 @@ public class PersonFacade {
                 throw new EntityNotFoundException("No person with provided id " + id + " was found");
             return new PersonDTO(fromDB);
 
+
+
     }
 
 
@@ -91,12 +93,13 @@ public class PersonFacade {
     //siden ingen address DTO, så man kan lave delete med person og address her?
     //men jeg skal vel create en address først? kan man lave en create address herinde i delet method? (:
     // (PersonDTO personDTO) i stedet for (int id)
-    public PersonDTO delete(int id) throws EntityNotFoundException, InternalErrorException {
+    public PersonDTO delete(int id) throws InternalErrorException, EntityNotFoundException {
         EntityManager em = getEntityManager();
+        if (!em.isOpen())
+            throw new InternalErrorException("Internal Server Problem. We are sorry for the inconvenience");
         Person fromDB = em.find(Person.class, id);
         if (fromDB == null)
-            //throw new EntityNotFoundException("Could not delete, provided id " + id + " does not exist");
-        throw new InternalErrorException("Internal Server Problem. We are sorry for the inconvenience");
+            throw new EntityNotFoundException("Could not delete, provided id " + id + " does not exist");
         em.getTransaction().begin();
         em.remove(fromDB);
         em.getTransaction().commit();
