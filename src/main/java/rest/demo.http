@@ -1,6 +1,6 @@
 ### Husk disse HTTP endpoints test tar udgangspunkt i din rigtige database
 
-GET http://localhost:8080/dat3_person/api/person/9
+GET http://localhost:8080/dat3_person/api/person/4
 
 ###
 POST http://localhost:8080/dat3_person/api/person
@@ -19,7 +19,7 @@ POST http://localhost:8080/dat3_person/api/person
 Content-Type: application/json
 #User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
-{"firstName": "Victor", "lastName": "Kalle", "phoneNumber": "111111"}
+{"firstName": "maru", "lastName": "huraa", "phoneNumber": "111111"}
 
 
 ###

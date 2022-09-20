@@ -32,6 +32,16 @@ public class PersonDTO {
         this.city = person.getAddress().getCity();
     }
 
+//    public PersonDTO(Person person) {
+//        if(person.getId() != null){
+//            this.id = person.getId();
+//        }
+//        this.firstName = person.getFirstName();
+//        this.lastName = person.getLastName();
+//        this.phoneNumber = person.getPhoneNumber();
+//    }
+
+
     public static List<PersonDTO> getDtos(List<Person> person){
         List<PersonDTO> persondtos = new ArrayList();
         person.forEach(p->persondtos.add(new PersonDTO(p)));

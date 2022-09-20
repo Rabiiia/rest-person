@@ -22,13 +22,24 @@ public class PersonResource {
     private static final PersonFacade FACADE =  PersonFacade.getFacade(EMF);
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
+//    @POST
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response create(String jsonInput){
+//        PersonDTO person = GSON.fromJson(jsonInput, PersonDTO.class);
+//        PersonDTO returned = FACADE.create(person);
+//        return Response.ok().entity(GSON.toJson(returned)).build();
+//    }
+
+
     @POST
     @Produces({MediaType.APPLICATION_JSON})
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(String jsonInput){
-        PersonDTO person = GSON.fromJson(jsonInput, PersonDTO.class);
-        PersonDTO returned = FACADE.create(person);
-        return Response.ok().entity(GSON.toJson(returned)).build();
+    public String create(String jsonInput)  {
+        PersonDTO p = GSON.fromJson(jsonInput, PersonDTO.class);
+        //PersonDTO pNew = FACADE.create(p.getFirstName(), p.getLastName(), p.getPhoneNumber(), p.getStreet(), p.getZip(), p.getCity());
+        PersonDTO pNew = FACADE.create(p);
+        return GSON.toJson(pNew);
     }
 
     @GET
@@ -48,16 +59,16 @@ public class PersonResource {
 
 //    throws EntityNotFoundException
 
-    @PUT
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_JSON})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") int id, String jsonInput)  {
-        PersonDTO personDTO = GSON.fromJson(jsonInput, PersonDTO.class);
-        personDTO.setId(id);
-        PersonDTO updated = FACADE.update(personDTO);
-        return Response.ok().entity(GSON.toJson(updated)).build();
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Produces({MediaType.APPLICATION_JSON})
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public Response update(@PathParam("id") int id, String jsonInput)  {
+//        PersonDTO personDTO = GSON.fromJson(jsonInput, PersonDTO.class);
+//        personDTO.setId(id);
+//        PersonDTO updated = FACADE.update(personDTO);
+//        return Response.ok().entity(GSON.toJson(updated)).build();
+//    }
 
     @DELETE
     @Path("{id}")

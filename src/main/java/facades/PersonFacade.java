@@ -3,12 +3,14 @@ package facades;
 
 
 import dtos.PersonDTO;
+import entities.Address;
 import entities.Person;
 import errorhandling.EntityNotFoundException;
 import errorhandling.InternalErrorException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -55,16 +57,25 @@ public class PersonFacade {
 //        }
 //        return new PersonDTO(personEntity);
 //    }
-
-    public PersonDTO create(PersonDTO personDTO ) {
-        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(),
-                personDTO.getPhoneNumber());
+//String fName, String lName, String phone, String street, String zip, String city
+    public PersonDTO create(PersonDTO personDTO) {
 
 
         EntityManager em = getEntityManager();
+        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getPhoneNumber());
 
         try {
             em.getTransaction().begin();
+            Query query = em.createQuery("SELECT a FROM Address a WHERE a.street = :street AND a.zip = :zip AND a.city = :city");
+            query.setParameter("street", personDTO.getStreet());
+            query.setParameter("zip", personDTO.getZip());
+            query.setParameter("city", personDTO.getCity());
+            List<Address> addresses = query.getResultList();
+            if (addresses.size() > 0){
+                personEntity.setAddress(addresses.get(0)); // The address already exists
+            } else {
+                personEntity.setAddress(new Address(personDTO.getStreet(), personDTO.getZip(), personDTO.getCity()));
+            }
 
 
             em.persist(personEntity);
@@ -74,6 +85,25 @@ public class PersonFacade {
         }
         return new PersonDTO(personEntity);
     }
+
+//    public PersonDTO create2(PersonDTO personDTO ) {
+//        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(),
+//                personDTO.getPhoneNumber());
+//
+//
+//        EntityManager em = getEntityManager();
+//
+//        try {
+//            em.getTransaction().begin();
+//
+//
+//            em.persist(personEntity);
+//            em.getTransaction().commit();
+//        } finally {
+//            em.close();
+//        }
+//        return new PersonDTO(personEntity);
+//    }
 
 
     public PersonDTO getById(int id) throws EntityNotFoundException {
@@ -96,22 +126,22 @@ public class PersonFacade {
     }
 
 
-    public PersonDTO update(PersonDTO personDTO){
-        EntityManager em = getEntityManager();
-//        Person fromDB = em.find(Person.class, personDTO.getId());
-//        if(fromDB == null)
-//            throw new EntityNotFoundException("No such Person with id: "+personDTO.getId());
-
-        Person personEntity = new Person(personDTO.getId(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getPhoneNumber());
-        try {
-            em.getTransaction().begin();
-            em.merge(personEntity);
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-        return new PersonDTO(personEntity);
-    }
+//    public PersonDTO update(PersonDTO personDTO){
+//        EntityManager em = getEntityManager();
+////        Person fromDB = em.find(Person.class, personDTO.getId());
+////        if(fromDB == null)
+////            throw new EntityNotFoundException("No such Person with id: "+personDTO.getId());
+//
+//        Person personEntity = new Person(personDTO.getId(), personDTO.getFirstName(), personDTO.getLastName(), personDTO.getPhoneNumber());
+//        try {
+//            em.getTransaction().begin();
+//            em.merge(personEntity);
+//            em.getTransaction().commit();
+//        } finally {
+//            em.close();
+//        }
+//        return new PersonDTO(personEntity);
+//    }
 
     //siden ingen address DTO, så man kan lave delete med person og address her?
     //men jeg skal vel create en address først? kan man lave en create address herinde i delet method? (:

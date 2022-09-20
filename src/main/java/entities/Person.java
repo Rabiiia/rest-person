@@ -39,9 +39,7 @@ public class Person {
     @Column(name = "updated")
     private Instant updated;
 
-    private String street;
-    private String zip;
-    private String city;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
@@ -51,15 +49,8 @@ public class Person {
         return address;
     }
 
-    // Syncronizing with address object
-    public void setAddress(Address address) {
-        if (address != null){
-            this.address = address;
-            address.addPerson(this);
-        } else {
-            this.address = null;
-        }
-    }
+
+
 
     public Person(){}
 
@@ -72,22 +63,18 @@ public class Person {
         //this.updated = this.created;
     }
 
-    public Person(String firstName, String lastName, String phoneNumber,  String street, String zip, String city) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-
-        this.street = street;
-        this.zip = zip;
-        this.city = city;
+    // Syncronizing with address object
+    public void setAddress(Address address) {
+        if (address != null){
+            this.address = address;
+            address.addPerson(this);
+        } else {
+            this.address = null;
+        }
     }
 
-    public Person(Integer id, String firstName, String lastName, String phoneNumber) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-    }
+
+
 
     public Integer getId() {
         return id;
