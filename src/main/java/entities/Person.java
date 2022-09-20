@@ -39,6 +39,28 @@ public class Person {
     @Column(name = "updated")
     private Instant updated;
 
+    private String street;
+    private String zip;
+    private String city;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    // Syncronizing with address object
+    public void setAddress(Address address) {
+        if (address != null){
+            this.address = address;
+            address.addPerson(this);
+        } else {
+            this.address = null;
+        }
+    }
+
     public Person(){}
 
 
@@ -48,6 +70,16 @@ public class Person {
         this.phoneNumber = phoneNumber;
         //this.created = Instant.now();
         //this.updated = this.created;
+    }
+
+    public Person(String firstName, String lastName, String phoneNumber,  String street, String zip, String city) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+
+        this.street = street;
+        this.zip = zip;
+        this.city = city;
     }
 
     public Person(Integer id, String firstName, String lastName, String phoneNumber) {

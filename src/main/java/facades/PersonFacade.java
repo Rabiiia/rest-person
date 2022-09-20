@@ -36,13 +36,36 @@ public class PersonFacade {
     }
 
 
+//    public PersonDTO create(PersonDTO personDTO ) {
+//
+//
+//        EntityManager em = getEntityManager();
+//        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(),
+//                personDTO.getPhoneNumber(), personDTO.getStreet(), personDTO.getZip(),
+//                personDTO.getCity());
+//
+//        try {
+//            em.getTransaction().begin();
+//
+//
+//            em.persist(personEntity);
+//            em.getTransaction().commit();
+//        } finally {
+//            em.close();
+//        }
+//        return new PersonDTO(personEntity);
+//    }
+
     public PersonDTO create(PersonDTO personDTO ) {
-       Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getPhoneNumber());
+        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(),
+                personDTO.getPhoneNumber());
+
 
         EntityManager em = getEntityManager();
 
         try {
             em.getTransaction().begin();
+
 
             em.persist(personEntity);
             em.getTransaction().commit();

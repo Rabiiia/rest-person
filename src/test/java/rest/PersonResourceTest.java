@@ -27,7 +27,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-
+//master 3
+@Disabled
 public class PersonResourceTest {
 
     private static final int SERVER_PORT = 7777;
