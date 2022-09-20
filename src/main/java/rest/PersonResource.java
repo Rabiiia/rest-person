@@ -2,7 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dtos.AddressDTO;
 import dtos.PersonDTO;
+import entities.Address;
+import entities.Person;
 import errorhandling.EntityNotFoundException;
 
 import errorhandling.InternalErrorException;
@@ -28,6 +31,17 @@ public class PersonResource {
     public Response create(String jsonInput){
         PersonDTO person = GSON.fromJson(jsonInput, PersonDTO.class);
         PersonDTO returned = FACADE.create(person);
+        return Response.ok().entity(GSON.toJson(returned)).build();
+    }
+
+
+    @POST
+    @Path("/{id}/address")
+    @Produces({MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response create(@PathParam("id") int id, String jsonInput) throws EntityNotFoundException {
+        AddressDTO address = GSON.fromJson(jsonInput, AddressDTO.class);
+        AddressDTO returned = FACADE.create(id, address);
         return Response.ok().entity(GSON.toJson(returned)).build();
     }
 
@@ -62,9 +76,17 @@ public class PersonResource {
     @DELETE
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response delete(@PathParam("id") int id) throws EntityNotFoundException, InternalErrorException {
-        PersonDTO deleted = FACADE.delete(id);
+    public Response deletePerson(@PathParam("id") int id) throws EntityNotFoundException, InternalErrorException {
+        PersonDTO deleted = FACADE.deletePerson(id);
         return Response.ok().entity(GSON.toJson(deleted)).build();
+    }
+
+    @DELETE
+    @Path("{id}/address")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deleteAddress(@PathParam("id") int id) throws EntityNotFoundException, InternalErrorException {
+        PersonDTO personWithoutAddress = FACADE.deleteAddress(id);
+        return Response.ok().entity(GSON.toJson(personWithoutAddress)).build();
     }
 
 

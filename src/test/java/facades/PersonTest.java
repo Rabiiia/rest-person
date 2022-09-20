@@ -115,7 +115,7 @@ public class PersonTest {
     @Test
     void deletePerson() throws EntityNotFoundException, InternalErrorException {
         System.out.println("Testing delete(id)");
-        PersonDTO person = facade.delete(p1.getId()); //når p1(birgitte) er slettet, så ->
+        PersonDTO person = facade.deletePerson(p1.getId()); //når p1(birgitte) er slettet, så ->
         int expected = 1; //forventer jeg der er 1 person tilbage, kasper.
         int actual = facade.getAll().size(); //det tjekker om der faktisk er 1 person tilbage (size)
         assertEquals(expected, actual); //korrekt: 1 tilbage.

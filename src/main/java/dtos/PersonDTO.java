@@ -1,7 +1,6 @@
 package dtos;
 
 import entities.Person;
-import entities.RenameMe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +12,8 @@ public class PersonDTO {
     private String lastName;
     private String phoneNumber;
 
+    private AddressDTO address;
+
     public PersonDTO() {
     }
 
@@ -23,6 +24,12 @@ public class PersonDTO {
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
         this.phoneNumber = person.getPhoneNumber();
+        if (person.getAddress() != null)
+            //så kan du se alle personer med den nye addresse. fx getAll persons, så får du alle personer
+            //med samme addresse MEN! i databasen har de personener  samme addreese men forskellige id'er
+            this.address = new AddressDTO(person.getAddress());
+        else
+            this.address = null;
     }
 
     public static List<PersonDTO> getDtos(List<Person> person){
@@ -62,6 +69,10 @@ public class PersonDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public AddressDTO getAddress() {
+        return address;
     }
 }
 

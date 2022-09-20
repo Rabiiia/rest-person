@@ -3,11 +3,19 @@
 GET http://localhost:8080/dat3_person/api/person/9
 
 ###
+
+POST http://localhost:8080/dat3_person/api/person/9/address
+Content-Type: application/json
+#User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
+
+{"street": "falkoner alle 2", "zip": "2400", "city": "Frederiksberg"}
+
+###
 POST http://localhost:8080/dat3_person/api/person
 Content-Type: application/json
 #User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
-{"firstName": "Victor", "lastName": "Kalle", "phoneNumber": "7654908"}
+{"firstName": "Mathias", "lastName": "A", "phoneNumber": "7766666"}
 
 ###
 GET http://localhost:8080/dat3_person/api/person/getAll
@@ -21,5 +29,11 @@ Content-Type: application/json
 {"firstName": "Pernille", "lastName": "Herman", "phoneNumber": "77665544"}
 
 ###
-DELETE http://localhost:8080/dat3_person/api/person/9
+DELETE http://localhost:8080/dat3_person/api/person/8
+
+###
+
+DELETE http://localhost:8080/dat3_person/api/person/88/address
+Content-Type: application/json
+#User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 

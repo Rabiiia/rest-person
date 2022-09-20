@@ -2,13 +2,16 @@ package facades;
 
 
 
+import dtos.AddressDTO;
 import dtos.PersonDTO;
+import entities.Address;
 import entities.Person;
 import errorhandling.EntityNotFoundException;
 import errorhandling.InternalErrorException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -51,6 +54,22 @@ public class PersonFacade {
         return new PersonDTO(personEntity);
     }
 
+    public AddressDTO create(int id, AddressDTO addressDTO) {
+        EntityManager em = getEntityManager();
+        Person person = em.find(Person.class, id);
+        Address addressEntity = new Address(addressDTO.getStreet(), addressDTO.getZip(), addressDTO.getCity());
+
+        try {
+            em.getTransaction().begin();
+            em.persist(addressEntity);
+            person.setAddress(addressEntity);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new AddressDTO(addressEntity);
+    }
+
 
     public PersonDTO getById(int id) throws EntityNotFoundException {
             EntityManager em = getEntityManager();
@@ -88,17 +107,48 @@ public class PersonFacade {
     }
 
 
-    public PersonDTO delete(int id) throws EntityNotFoundException, InternalErrorException {
+    public PersonDTO deletePerson(int id) throws EntityNotFoundException, InternalErrorException {
         EntityManager em = getEntityManager();
-        Person fromDB = em.find(Person.class, id);
-        if (fromDB == null)
-            //throw new EntityNotFoundException("Could not delete, provided id " + id + " does not exist");
-        throw new InternalErrorException("Internal Server Problem. We are sorry for the inconvenience");
+        Person person = em.find(Person.class, id);
+        Address address = em.find(Address.class, person.getAddress().getId());
+        if (person == null || address == null) {
+            throw new EntityNotFoundException("Could not delete, provided id " + id + " does not exist");
+        }
+        //throw new InternalErrorException("Internal Server Problem. We are sorry for the inconvenience");
         em.getTransaction().begin();
-        em.remove(fromDB);
+        em.remove(person);
+        em.remove(address);
         em.getTransaction().commit();
-        return new PersonDTO(fromDB);
+        return new PersonDTO(person);
     }
 
+    public PersonDTO deleteAddress(int id) throws EntityNotFoundException, InternalErrorException {
 
+        try {
+            EntityManager em = getEntityManager();
+            Person person = em.find(Person.class, id);
+            if (person == null) {
+                throw new EntityNotFoundException("Could not find a person with the provided id " + id);
+            }
+
+            //hvis person ikke har en addresse
+            if (person.getAddress() == null) {
+                throw new EntityNotFoundException("The person does not have an address");
+            }
+            // hvis person har en addresse, så finder dne lige id på addressen først
+            Address address = em.find(Address.class, person.getAddress().getId());
+
+            em.getTransaction().begin();
+            person.setAddress(null);
+            em.remove(address);
+            em.getTransaction().commit();
+            em.close();
+            return new PersonDTO(person);
+        } catch (PersistenceException e){
+            throw new InternalErrorException("Internal Server Problem. We are sorry for the inconvenience");
+        }
+    }
 }
+//catch (Exception e) {
+  //      throw new InternalErrorException("Internal Server Problem. We are sorry for the inconvenience");
+//}
