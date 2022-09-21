@@ -1,14 +1,14 @@
 ### Husk disse HTTP endpoints test tar udgangspunkt i din rigtige database
 
-GET http://localhost:8080/dat3_person/api/person/4
+GET http://localhost:8080/dat3_person/api/person/7
 
 ###
 POST http://localhost:8080/dat3_person/api/person
 Content-Type: application/json
 #User-Agent: Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
-{"firstName": "Victor", "lastName": "Kalle", "phoneNumber": "7654908",
-  "street": "Nørrebros runddel", "zip": "2400", "city": "Nørrebro"}
+{"firstName": "Hassan", "lastName": "Kassem", "phoneNumber": "7654908",
+  "street": "Nørgaardsvej", "zip": "2400", "city": "Nørrebro"}
 
 
 ###
@@ -32,5 +32,5 @@ Content-Type: application/json
 {"firstName": "Pernille", "lastName": "Herman", "phoneNumber": "77665544"}
 
 ###
-DELETE http://localhost:8080/dat3_person/api/person/9
+DELETE http://localhost:8080/dat3_person/api/person/12
 

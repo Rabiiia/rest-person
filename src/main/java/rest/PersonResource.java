@@ -37,7 +37,6 @@ public class PersonResource {
     @Consumes({MediaType.APPLICATION_JSON})
     public String create(String jsonInput)  {
         PersonDTO p = GSON.fromJson(jsonInput, PersonDTO.class);
-        //PersonDTO pNew = FACADE.create(p.getFirstName(), p.getLastName(), p.getPhoneNumber(), p.getStreet(), p.getZip(), p.getCity());
         PersonDTO pNew = FACADE.create(p);
         return GSON.toJson(pNew);
     }

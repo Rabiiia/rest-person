@@ -70,13 +70,15 @@ public class PersonFacade {
             query.setParameter("street", personDTO.getStreet());
             query.setParameter("zip", personDTO.getZip());
             query.setParameter("city", personDTO.getCity());
+
             List<Address> addresses = query.getResultList();
             if (addresses.size() > 0){
                 personEntity.setAddress(addresses.get(0)); // The address already exists
             } else {
-                personEntity.setAddress(new Address(personDTO.getStreet(), personDTO.getZip(), personDTO.getCity()));
+                Address newAddress = new Address(personDTO.getStreet(), personDTO.getZip(), personDTO.getCity());
+                em.persist(newAddress);
+                personEntity.setAddress(newAddress);
             }
-
 
             em.persist(personEntity);
             em.getTransaction().commit();
@@ -86,31 +88,16 @@ public class PersonFacade {
         return new PersonDTO(personEntity);
     }
 
-//    public PersonDTO create2(PersonDTO personDTO ) {
-//        Person personEntity = new Person(personDTO.getFirstName(), personDTO.getLastName(),
-//                personDTO.getPhoneNumber());
 //
-//
-//        EntityManager em = getEntityManager();
-//
-//        try {
-//            em.getTransaction().begin();
-//
-//
-//            em.persist(personEntity);
-//            em.getTransaction().commit();
-//        } finally {
-//            em.close();
-//        }
-//        return new PersonDTO(personEntity);
-//    }
 
 
     public PersonDTO getById(int id) throws EntityNotFoundException {
+
             EntityManager em = getEntityManager();
             Person fromDB = em.find(Person.class, id);
             if (fromDB == null)
                 throw new EntityNotFoundException("No person with provided id " + id + " was found");
+            em.close();
             return new PersonDTO(fromDB);
 
 

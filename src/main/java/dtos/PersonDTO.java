@@ -5,6 +5,7 @@ import entities.RenameMe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PersonDTO {
 
@@ -103,6 +104,19 @@ public class PersonDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonDTO personDTO = (PersonDTO) o;
+        return id.equals(personDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
 
